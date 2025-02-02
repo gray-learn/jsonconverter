@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@jsonforms/core": "^3.5.1",
+    "@jsonforms/material-renderers": "^3.5.1",
+    "@jsonforms/react": "^3.5.1",
+    "@rjsf/core": "^5.24.2",
+    "@rjsf/validator-ajv8": "^5.24.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
