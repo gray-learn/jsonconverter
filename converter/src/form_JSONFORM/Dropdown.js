@@ -10,7 +10,6 @@ const fetchLocationOptions = async () => {
         // Randomly simulate a failed API response
         const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
 
-
         if (success) {
           resolve({
             data: [
@@ -45,54 +44,59 @@ const Dropdown = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   // Part 1 Need to Existign Datasource
   useEffect(() => {
     // Fetch location options on mount
     const getLocations = async () => {
       const locationData = await fetchLocationOptions();
 
-
       // Get the allowed nationality options from the schema
       const allowedNationalities = schema?.properties?.nationality?.enum || [];
-
 
       // Filter the location data to include only valid nationalities
       const validLocations = locationData.filter((location) =>
         allowedNationalities.includes(location.value)
       );
 
-
       const updatedLocations = validLocations.map((v) => v.value);
-
 
       if (updatedLocations.length > 0) {
         // setLocations(validLocations);
-        onSendData(updatedLocations);
+
+        const dropdownschema = (prevSchema) => {
+          const updatedSchema = {
+            ...prevSchema,
+            properties: {
+              ...prevSchema.properties,
+              nationality: {
+                ...prevSchema.properties.nationality,
+                enum: updatedLocations, // Update nationality in schema
+              },
+            },
+          };
+          console.log("Updated schema:", updatedSchema);
+          return updatedSchema; // Update schema with selected nationality
+        };
+
+        onSendData(dropdownschema);
       } else {
         setError("No valid locations found.");
       }
       setLoading(false);
     };
 
-
     getLocations();
   }, [schema, onSendData]);
-
 
   useEffect(() => {
     // Fetch location options on mount
     const techs = schema?.properties?.tech?.enum || [];
     const operations = schema?.properties?.operation?.enum || [];
     const parts = schema?.properties?.part?.enum || [];
-    // console.log("Techs:", techs);
-    // console.log("Operations:", operations);
-    // console.log("Parts:", parts);
-
 
     // Accessing dropDataKey's property names
     console.log(dropDataKey);
-    const keyType = dropDataKey[0];
+    const keyType = dropDataKey;
     switch (keyType) {
       case "tech": {
         // return new Promise((resolve) => {
@@ -120,25 +124,6 @@ const Dropdown = ({
           console.log(updatedRuleSchema);
           onControlData(updatedRuleSchema);
         }
-        // 5F disable
-        //   {
-        //     "type": "Control",
-        //     "scope": "#/properties/operation",
-        //     "rule": {
-        //         "effect": "DISABLE",
-        //         "condition": {
-        //             "scope": "#/properties/part",
-        //             "schema": {
-        //                 "enum": [
-        //                     "4F",
-        //                     "5F"
-        //                 ]
-        //             }
-        //         }
-        //     }
-        // }
-
-
         break;
       }
       case "operation": {
@@ -150,7 +135,6 @@ const Dropdown = ({
     }
     // };
   }, [schema, onControlData, dropDataKey, dropDataValue]);
-
 
   const createDropdownRule = (parent, child, rule, value) => {
     // Build the JSON structure dynamically
@@ -169,19 +153,15 @@ const Dropdown = ({
       },
     };
 
-
     // Return the JSON structure
     return jsonStructure;
   };
-
 
   // Function to update schema
   const updateRuleSchema = (prevSchema, rule) => {
     // TODO　rule LOGIC
 
-
     const key = rule.scope; // e.g., "#/properties/part"
-
 
     const updatedSchema = {
       ...prevSchema,
@@ -194,7 +174,6 @@ const Dropdown = ({
               // TODO
               if (nestedElement.scope === key) {
                 // Update the rule condition to use dropdownData dynamically
-
 
                 // const nestMock = {
                 //   ...nestedElement,
@@ -210,7 +189,6 @@ const Dropdown = ({
                 //   },
                 // };
 
-
                 return rule;
               }
               return nestedElement;
@@ -220,7 +198,6 @@ const Dropdown = ({
         return element;
       }),
     };
-
 
     // const updatedSchema = {
     //   ...prevSchema,
@@ -264,24 +241,19 @@ const Dropdown = ({
     //   }),
     // };
 
-
     console.log("Updated schema:", updatedSchema);
     return updatedSchema; // Return updated schema
   };
-
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-
   if (error) {
     return <div>{error}</div>;
   }
 
-
   return <></>;
 };
-
 
 export default Dropdown;

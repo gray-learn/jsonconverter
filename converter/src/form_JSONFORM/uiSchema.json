@@ -1,0 +1,152 @@
+{
+    "type": "VerticalLayout",
+    "elements": [
+        {
+            "type": "HorizontalLayout",
+            "elements": [
+                {
+                    "type": "Control",
+                    "scope": "#/properties/name"
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/personalData/properties/age"
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/birthDate"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "text": "Additional Information"
+        },
+        {
+            "type": "HorizontalLayout",
+            "elements": [
+                {
+                    "type": "Control",
+                    "scope": "#/properties/nationality"
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/occupation",
+                    "options": {
+                        "suggestion": [
+                            "Accountant",
+                            "Engineer",
+                            "Freelancer",
+                            "Journalism",
+                            "Physician",
+                            "Student",
+                            "Teacher",
+                            "Other"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "text": "Dropdown Control"
+        },
+        {
+            "type": "Group",
+            "elements": [
+                {
+                    "type": "Control",
+                    "scope": "#/properties/tech"
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/part",
+                    "rule": {
+                        "effect": "HIDE",
+                        "condition": {
+                            "scope": "#/properties/tech",
+                            "schema": {
+                                "enum": [
+                                    "VIS"
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/operation"
+                }
+            ]
+        },
+        {
+            "type": "Categorization",
+            "elements": [
+                {
+                    "type": "Category",
+                    "i18n": "address",
+                    "elements": [
+                        {
+                            "type": "HorizontalLayout",
+                            "elements": [
+                                {
+                                    "type": "Control",
+                                    "scope": "#/properties/address/properties/street"
+                                },
+                                {
+                                    "type": "Control",
+                                    "scope": "#/properties/address/properties/streetNumber"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "HorizontalLayout",
+                            "elements": [
+                                {
+                                    "type": "Control",
+                                    "scope": "#/properties/address/properties/city"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Category",
+                    "label": "Additional",
+                    "elements": [
+                        {
+                            "type": "Control",
+                            "scope": "#/properties/vegetarianOptions/properties/vegan"
+                        },
+                        {
+                            "type": "Control",
+                            "scope": "#/properties/vegetarianOptions/properties/favoriteVegetable"
+                        },
+                        {
+                            "type": "Control",
+                            "scope": "#/properties/vegetarianOptions/properties/otherFavoriteVegetable",
+                            "rule": {
+                                "effect": "SHOW",
+                                "condition": {
+                                    "scope": "#/properties/vegetarianOptions/properties/favoriteVegetable",
+                                    "schema": {
+                                        "const": "Other"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "rule": {
+                        "effect": "SHOW",
+                        "condition": {
+                            "scope": "#/properties/vegetarian",
+                            "schema": {
+                                "const": true
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
