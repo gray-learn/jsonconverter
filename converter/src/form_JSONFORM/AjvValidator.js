@@ -24,13 +24,32 @@ const useAjvValidator = () => {
       validate: (email) => /^[\w-.]+@[\w-]+.[a-zA-Z]{2,7}$/.test(email),
     });
     //  TODO
+    // Custom validation format
+    ajvInstance.addFormat("target_ope_f", {
+      type: "string",
+      validate: (v) => /^[0-9]+(\.[0-9]+)+$/.test(v),
+    });
+
+    ajvInstance.addKeyword({
+      keyword: "target_ope",
+      modifying: true,
+      compile: (a) => {
+        console.log(a); // true
+        return (v) => /^[0-9]+(\.[0-9]+)+$/.test(v);
+      },
+      errors: true,
+    });
     ajvInstance.addKeyword({
       keyword: "maxLengthStr",
       modifying: true,
-      compile: (minLength) => {
+      compile: (maxLength) => {
+        console.log(maxLength);
+
         return (data) => {
+          // TODO：Testing Valid Logic
+
           // Check if the data is a string and its length is less than minLength
-          if (typeof data === "string" && data.length < minLength) {
+          if (typeof data === "string" && data.length < maxLength) {
             return false; // This will trigger the validation error
           }
           return true; // Valid if the string length is >= minLength

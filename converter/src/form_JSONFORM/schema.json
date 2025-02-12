@@ -47,6 +47,11 @@
                 "height"
             ]
         },
+        "target_ope": {
+            "type": "string",
+            "description": "Please enter your target_ope",
+            "format": "target_ope_f"
+        },
         "occupation": {
             "type": "string"
         },
@@ -174,7 +179,8 @@
             "operation": "Please specify an operation: Hold or Release.",
             "address": "Address should contain valid street, street number, and city information.",
             "autocompleteEnum": "Autocomplete selection must be one of: foo, bar, foobar.",
-            "autocompleteOneOf": "Please select from the available options: Foo, Bar, FooBar."
+            "autocompleteOneOf": "Please select from the available options: Foo, Bar, FooBar.",
+            "target_ope": "please type number format (e.g.100.200)"
         }
     }
 }

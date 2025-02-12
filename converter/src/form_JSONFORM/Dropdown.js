@@ -5,26 +5,27 @@ import React, { useState, useEffect } from "react";
 const fetchLocationOptions = async () => {
   try {
     // Simulating an API delay using setTimeout
-    const response = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Randomly simulate a failed API response
-        const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
+    // const response = await new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     // Randomly simulate a failed API response
+    //     const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
 
-        if (success) {
-          resolve({
-            data: [
-              { value: "US", label: "United States" },
-              { value: "CA", label: "Canada" },
-              { value: "JP", label: "Japan" },
-              { value: "TW", label: "Taiwan" },
-            ],
-          });
-        } else {
-          reject("Failed to fetch location options from the server.");
-        }
-      }, 1500); // Simulate delay of 1.5 seconds
-    });
-    return response.data;
+    //     if (success) {
+    //       resolve({
+    //         data: [
+    //           { value: "US", label: "United States" },
+    //           { value: "CA", label: "Canada" },
+    //           { value: "JP", label: "Japan" },
+    //           { value: "TW", label: "Taiwan" },
+    //         ],
+    //       });
+    //     } else {
+    //       reject("Failed to fetch location options from the server.");
+    //     }
+    //   }, 1500); // Simulate delay of 1.5 seconds
+    // });
+    // return response.data;
+    return [];
   } catch (error) {
     console.error("Error fetching location options:", error);
     return [];
