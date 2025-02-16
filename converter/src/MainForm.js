@@ -15,39 +15,47 @@ import {
 
 const MainForm = ({ Title, Key }) => {
     const [useAjvValidator, setAjvValidator] = useState(null);
-    const [Dropdown, setDropdown] = useState(null);
+    
     const [initSchema, setInitSchema] = useState(null);
     const [initUischema, setInitUischema] = useState(null);
     const [schema, setSchema] = useState(null);
     const [uiSchema, setUiSchema] = useState(null);
     const [ajv, setAjv] = useState(null); // State to hold the AJV instance
-    const UseAjvValidatorWrapper = import(
-        `./${Key}/UseAjvValidatorWrapper`
-    );
+    
+    const [DropdownComponent, setDropdownComponent] = useState(null);
+    const [UseAjvValidatorWrapper, setUseAjvValidatorWrapper] = useState(null);
 
-    // Dynamically import the AjvValidator and Dropdown components
+    // TODO Dynamically import the AjvValidator 
+    useEffect(() => {
+        console.log(Key);
+        import(`./${Key}/UseAjvValidatorWrapper`)
+          .then((module) => setUseAjvValidatorWrapper(() => module.default))
+          .catch((error) => console.error("Error loading component:", error));
+          console.log(UseAjvValidatorWrapper)
+    }, [Key]);
+
+    // TODO Dynamically import the Dropdown components
+    useEffect(() => {
+      console.log(Key);
+      import(`./${Key}/Dropdown`)
+        .then((module) => setDropdownComponent(() => module.default))
+        .catch((error) => console.error("Error loading component:", error));
+        console.log(DropdownComponent)
+    }, [Key]);
+
     useEffect(() => {
         console.log(Key);
         const loadModules = async () => {
             try {
                 // Dynamically import JS files and JSON files
-                const Dropdown = await import(`./${Key}/Dropdown`);
                 const schema = require(`./${Key}/schema.json`);
                 const uischema = require(`./${Key}/uiSchema.json`);
-
-                // Conditionally import AjvValidator based on some condition
-                // setAjvValidator(() => AjvModule.default || AjvModule); // In case the module has a default export
-                // setDropdown(() => dropdownModule.default || dropdownModule);
-
-                setDropdown(Dropdown);
-
-                console.log(Dropdown);
+                
                 setInitSchema(schema);
-                // TODO
                 setSchema(schema);
                 setUiSchema(uischema);
                 // setAjv(setAjv)
-                console.log(setAjv);
+                // console.log(setAjv);
             } catch (error) {
                 console.error("Error loading modules:", error);
             }
@@ -61,7 +69,6 @@ const MainForm = ({ Title, Key }) => {
     const [dropdownKey, setDropdownKey] = useState({});
     const [dropDataValue, setDropDataValue] = useState({});
 
-    //   console.log(AjvModule);
     //   const ajv = useAjvValidator(); // Get the custom AJV instance
     const [isDialogOpen, setIsDialogOpen] = useState(false); // Control dialog visibility
     const [errorMessages, setErrorMessages] = useState(""); // Store error messages
@@ -184,19 +191,16 @@ const MainForm = ({ Title, Key }) => {
         setIsDialogOpen(false);
     };
 
-    //   // If modules or schema are not loaded yet, show a loading message
-    //   if (!useAjvValidator || !Dropdown || !initSchema || !initUischema) {
-    //     return <div>Loading...</div>;
-    //   }
     if (!schema || !uiSchema) {
         return <div>Loading Schema...</div>;
     }
-    if (!Dropdown) {
+    if (!DropdownComponent) {
         return <div>Loading Dropdown...</div>; // Show loading state if Dropdown is not loaded yet
     }
-    if (!ajv) {
-        return <div>Loading AJV...</div>;
-    }
+    // if (!ajv) {
+    //     return <div>Loading AJV...</div>;
+    // }
+
     return (
         <div className="">
             <Suspense fallback={<div>Loading...</div>}>
@@ -214,7 +218,7 @@ const MainForm = ({ Title, Key }) => {
                                 ajv={ajv}
                             />
 
-                            <Dropdown
+                            <DropdownComponent
                                 schema={schema}
                                 uiSchema={uiSchema}
                                 dropDataKey={dropdownKey}

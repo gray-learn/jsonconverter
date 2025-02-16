@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import ajvErrors from "ajv-errors";
@@ -60,5 +60,18 @@ const useAjvValidator = () => {
     return ajvInstance;
   }, []);
 };
+// Wrapper Component that uses the useAjvValidator hook
+const UseAjvValidatorWrapper = ({ onAjvReady }) => {
+  const ajv = useAjvValidator(); // Call the custom hook to get the AJV instance
 
-export default useAjvValidator;
+  // Pass ajv to the parent component through the callback
+  useEffect(() => {
+    if (onAjvReady) {
+      onAjvReady(ajv); // Pass AJV instance back to the parent
+      console.log(ajv)
+    }
+  }, [ajv, onAjvReady]);
+  return <div>AJV is ready</div>;
+};
+
+export default UseAjvValidatorWrapper;

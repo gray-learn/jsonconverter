@@ -1,0 +1,193 @@
+{
+    "type": "object",
+    "properties": {
+        "price": {
+            "type": "string",
+            "maxLengthStr": 3,
+            "description": "Please enter your price"
+        },
+        "vegetarian": {
+            "type": "boolean"
+        },
+        "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Please enter your birth date."
+        },
+        "nationality": {
+            "type": "string",
+            "enum": [
+                "US",
+                "RU",
+                "IT",
+                "CA",
+                "JP"
+            ],
+            "title": "Nationality"
+        },
+        "food": {
+            "type": "string",
+            "enum": [
+                ""
+            ],
+            "title": "Food"
+        },
+        "personalData": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "description": "Please enter your age."
+                },
+                "height": {
+                    "type": "number"
+                },
+                "drivingSkill": {
+                    "type": "number",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "default": 7
+                }
+            },
+            "required": [
+                "age",
+                "height"
+            ]
+        },
+        "eqp_ope": {
+            "type": "string",
+            "description": "Please enter your eqp_ope",
+            "format": "eqp_ope_f"
+        },
+        "occupation": {
+            "type": "string"
+        },
+        "tech": {
+            "type": "string",
+            "enum": [
+                "VIS",
+                "VSMC"
+            ],
+            "title": "Tech"
+        },
+        "part": {
+            "type": "string",
+            "enum": [
+                "1F",
+                "2F",
+                "3F",
+                "4F",
+                "5F"
+            ],
+            "title": "Part"
+        },
+        "operation": {
+            "type": "string",
+            "enum": [
+                "Hold",
+                "Release"
+            ],
+            "title": "Operation"
+        },
+        "address": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string"
+                },
+                "streetNumber": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                }
+            }
+        },
+        "autocompleteEnum": {
+            "type": "string",
+            "enum": [
+                "foo",
+                "bar",
+                "foobar"
+            ]
+        },
+        "autocompleteOneOf": {
+            "type": "string",
+            "oneOf": [
+                {
+                    "const": "foo",
+                    "title": "Foo"
+                },
+                {
+                    "const": "bar",
+                    "title": "Bar"
+                },
+                {
+                    "const": "foobar",
+                    "title": "FooBar"
+                }
+            ]
+        }
+    },
+    "required": [
+        "price",
+        "vegetarian",
+        "birthDate",
+        "personalData"
+    ],
+    "definitions": {
+        "address": {
+            "type": "object",
+            "title": "Address",
+            "properties": {
+                "street_address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "street_address",
+                "city",
+                "state"
+            ]
+        },
+        "user": {
+            "type": "object",
+            "title": "User",
+            "properties": {
+                "price": {
+                    "type": "string"
+                },
+                "mail": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "price",
+                "mail"
+            ]
+        }
+    },
+    "errorMessage": {
+        "properties": {
+            "price": "price should be a string with at least 3 characters.",
+            "vegetarian": "Vegetarian field should be a boolean value.",
+            "birthDate": "Please enter a valid birth date in the correct format.",
+            "nationality": "Nationality must be one of the allowed values: US, RU, IT, CA, JP.",
+            "personalData": "Personal data (age, height) are required.",
+            "occupation": "Please specify your occupation.",
+            "tech": "Tech field must be one of the allowed values: VIS, VSMC.",
+            "part": "Please select a part from the available options: 1F, 2F, 3F, 4F, 5F.",
+            "operation": "Please specify an operation: Hold or Release.",
+            "address": "Address should contain valid street, street number, and city information.",
+            "autocompleteEnum": "Autocomplete selection must be one of: foo, bar, foobar.",
+            "autocompleteOneOf": "Please select from the available options: Foo, Bar, FooBar.",
+            "eqp_ope": "please type number format (e.g.100.200)"
+        }
+    }
+}

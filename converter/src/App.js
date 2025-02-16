@@ -4,17 +4,7 @@ import FormTable from "./FormTable.js";
 import SearchBar from "./SearchBar";
 import MainGrid from "./MainGrid"; 
 import FormDemoJsonForms from "./jsonform/FormDemoJsonForms"; // Import the child component
-// import SQLHoldLot from "./jsonform_SQLHoldlot/SQLHoldLot"; // Import the child component
-// TODO!!!!!!!!!
 import MainForm from "./MainForm";
-
-
-import {
-  formatQuery,
-  Field,
-  QueryBuilder,
-  RuleGroupType,
-} from "react-querybuilder";
 import "react-querybuilder/dist/query-builder.css";
 import "./index.css";
 const App = () => {
@@ -43,15 +33,15 @@ const App = () => {
 
         <Routes>
           <Route path="/formdemo" element={<FormDemoJsonForms />} />
-          {/* <Route
-            path="/holdlot"
-            element={<MainForm Title="HoldLot" Key="jsonform_SQLHoldlot" />}
-          /> */}
+  
           <Route
-            path="/demo"
+            path="/jsonform"
             element={<MainForm Title="Demo" Key="jsonform" />}
+          />  
+          <Route
+            path="/drink"
+            element={<MainForm Title="Demo" Key="drink" />}
           />
-
           <Route path="/" element={<FormTable searchQuery={searchQuery} />} />
         </Routes>
       </MainGrid>
