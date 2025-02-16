@@ -20,7 +20,6 @@ const MainForm = ({ Title, Key }) => {
     const [initUischema, setInitUischema] = useState(null);
     const [schema, setSchema] = useState(null);
     const [uiSchema, setUiSchema] = useState(null);
-
     const [ajv, setAjv] = useState(null); // State to hold the AJV instance
     const path = `./${Key}/UseAjvValidatorWrapper`;
 
