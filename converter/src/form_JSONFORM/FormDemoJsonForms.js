@@ -8,7 +8,6 @@ import {
   materialCells,
 } from "@jsonforms/material-renderers";
 import Dropdown from "./Dropdown"; // Import the Dropdown component
-// Import schema dynamically
 let initSchema = require("./schema.json");
 let initUischema = require("./uiSchema.json");
 
@@ -64,23 +63,16 @@ const FormDemoJsonForms = () => {
   // Handle form submit
   const handleSubmit = useCallback(async ({ data }) => {
     console.log("Form submitted with data:", data);
+    // You can also log `formData` directly here
+    console.log("Current formData:", formData);
   }, []);
-
-  // Function to update the schema with valid locations from the Dropdown component
-  const handleLocationChange = (selectedLocation) => {
-    console.log(selectedLocation);
-    const updatedSchema = { ...schema };
-    updatedSchema.properties.nationality.enum = [selectedLocation]; // Update locations in schema
-    setSchema(updatedSchema); // Update schema with selected location
-  };
 
   const handleDropdownData = useCallback(
     (dropdownData) => {
       // Check if the current enum value is different from the new dropdown data
       const currentEnum = schema.properties.nationality.enum || [];
-
+      console.log("handleDropdownData");
       // renew schema in dropdown
-      // TODO
       if (JSON.stringify(currentEnum) !== JSON.stringify(dropdownData)) {
         console.log("Dropdown data has changed:", dropdownData);
         setSchema(dropdownData);
@@ -233,7 +225,6 @@ const FormDemoJsonForms = () => {
           uiSchema={uiSchema}
           dropDataKey={dropdownKey} // Part2 TODO
           dropDataValue={dropDataValue} // Part2 TODO
-          onChange={handleLocationChange}
           onSendData={handleDropdownData} // Part1
           onControlData={handleControlData} // Part2 TODO
         />

@@ -18,7 +18,7 @@
                 },
                 {
                     "type": "Control",
-                    "scope": "#/properties/target_ope"
+                    "scope": "#/properties/eqp_ope"
                 }
             ]
         },
@@ -32,6 +32,10 @@
                 {
                     "type": "Control",
                     "scope": "#/properties/nationality"
+                },
+                {
+                    "type": "Control",
+                    "scope": "#/properties/food"
                 },
                 {
                     "type": "Control",

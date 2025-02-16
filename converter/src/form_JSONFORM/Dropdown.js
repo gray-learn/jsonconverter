@@ -5,26 +5,52 @@ import React, { useState, useEffect } from "react";
 const fetchLocationOptions = async () => {
   try {
     // Simulating an API delay using setTimeout
-    // const response = await new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     // Randomly simulate a failed API response
-    //     const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
+    const response = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Randomly simulate a failed API response
+        const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
 
-    //     if (success) {
-    //       resolve({
-    //         data: [
-    //           { value: "US", label: "United States" },
-    //           { value: "CA", label: "Canada" },
-    //           { value: "JP", label: "Japan" },
-    //           { value: "TW", label: "Taiwan" },
-    //         ],
-    //       });
-    //     } else {
-    //       reject("Failed to fetch location options from the server.");
-    //     }
-    //   }, 1500); // Simulate delay of 1.5 seconds
-    // });
-    // return response.data;
+        if (success) {
+          resolve({
+            data: [
+              { value: "US", label: "United States" },
+              { value: "CA", label: "Canada" },
+              { value: "JP", label: "Japan" },
+              { value: "TW", label: "Taiwan" },
+            ],
+          });
+        } else {
+          reject("Failed to fetch location options from the server.");
+        }
+      }, 1500); // Simulate delay of 1.5 seconds
+    });
+    return response.data;
+    return [];
+  } catch (error) {
+    console.error("Error fetching location options:", error);
+    return [];
+  }
+};
+// Simulate fetching options for locations
+const fetchFoodOptions = async () => {
+  try {
+    const response = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.1; // 90% chance to succeed, 10% chance to fail
+
+        if (success) {
+          resolve({
+            data: [
+              { value: "RI", label: "Rice" },
+              { value: "NO", label: "Noodle" },
+            ],
+          });
+        } else {
+          reject("Failed to fetch location options from the server.");
+        }
+      }, 1500); // Simulate delay of 1.5 seconds
+    });
+    return response.data;
     return [];
   } catch (error) {
     console.error("Error fetching location options:", error);
@@ -48,8 +74,10 @@ const Dropdown = ({
   // Part 1 Need to Existign Datasource
   useEffect(() => {
     // Fetch location options on mount
-    const getLocations = async () => {
+    const getDBDropdown = async () => {
+      // TODO multi dropdown
       const locationData = await fetchLocationOptions();
+      const foodData = await fetchFoodOptions();
 
       // Get the allowed nationality options from the schema
       const allowedNationalities = schema?.properties?.nationality?.enum || [];
@@ -60,10 +88,9 @@ const Dropdown = ({
       );
 
       const updatedLocations = validLocations.map((v) => v.value);
+      const updatedFoods = foodData.map((v) => v.value);
 
       if (updatedLocations.length > 0) {
-        // setLocations(validLocations);
-
         const dropdownschema = (prevSchema) => {
           const updatedSchema = {
             ...prevSchema,
@@ -73,9 +100,11 @@ const Dropdown = ({
                 ...prevSchema.properties.nationality,
                 enum: updatedLocations, // Update nationality in schema
               },
+              // Dropdown scale
+              ...createDropdown(prevSchema, 'food', updatedFoods),
             },
           };
-          console.log("Updated schema:", updatedSchema);
+          // console.log("Updated schema:", updatedSchema);
           return updatedSchema; // Update schema with selected nationality
         };
 
@@ -86,7 +115,7 @@ const Dropdown = ({
       setLoading(false);
     };
 
-    getLocations();
+    getDBDropdown();
   }, [schema, onSendData]);
 
   useEffect(() => {
@@ -157,6 +186,16 @@ const Dropdown = ({
     // Return the JSON structure
     return jsonStructure;
   };
+
+  // Define the createDropdown function
+  function createDropdown(prevSchema, field, dropList) {
+    return {
+      [field]: {
+        ...prevSchema.properties[field],
+        enum: dropList,
+      },
+    };
+  }
 
   // Function to update schema
   const updateRuleSchema = (prevSchema, rule) => {
