@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { JsonForms } from "@jsonforms/react";
 import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
-import useAjvValidator from "./AjvValidator"; // Import custom AJV hook
+// import useAjvValidator from "./AjvValidator"; // Import custom AJV hook
 import {
   materialRenderers,
   materialCells,
@@ -19,7 +19,7 @@ const FormDemoJsonForms = () => {
   const [schema, setSchema] = useState(initSchema);
   const [uiSchema, setUiSchema] = useState(initUischema);
 
-  const ajv = useAjvValidator(); // Get the custom AJV instance
+  // const ajv = useAjvValidator(); // Get the custom AJV instance
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Control dialog visibility
   const [errorMessages, setErrorMessages] = useState(""); // Store error messages
 
@@ -176,24 +176,24 @@ const FormDemoJsonForms = () => {
     setErrorMessages("Validating data... Please wait.");
 
     // Run validation
-    const valid = ajv.validate(schema, formData);
+    // const valid = ajv.validate(schema, formData);
 
-    console.log("Validation result:", valid);
-    if (!valid) {
-      // Collect error messages if validation fails
-      const errors = ajv.errors
-        .map((error) => {
-          // return `Error in ${error.instancePath}: ${error.message}`; // Retrieve the error message and its path
-          return `${error.message}`; // Retrieve the error message and its path
-        })
-        .join("\n"); // Join all errors into a single string
+    // console.log("Validation result:", valid);
+    // if (!valid) {
+    //   // Collect error messages if validation fails
+    //   const errors = ajv.errors
+    //     .map((error) => {
+    //       // return `Error in ${error.instancePath}: ${error.message}`; // Retrieve the error message and its path
+    //       return `${error.message}`; // Retrieve the error message and its path
+    //     })
+    //     .join("\n"); // Join all errors into a single string
 
-      // Set error messages
-      setErrorMessages(`Validation Rules: ${errors}`);
-    } else {
-      // If the data is valid
-      setErrorMessages("Data is valid!");
-    }
+    //   // Set error messages
+    //   setErrorMessages(`Validation Rules: ${errors}`);
+    // } else {
+    //   // If the data is valid
+    //   setErrorMessages("Data is valid!");
+    // }
   };
 
   const closeDialog = () => {
@@ -205,7 +205,6 @@ const FormDemoJsonForms = () => {
     <div className="">
       <h2 className="">JSON Forms Preview</h2>
       <div className="">
-        {/* <ThemeProvider theme={customizedTheme}> */}
         <JsonForms
           schema={schema}
           uischema={uiSchema}
@@ -215,10 +214,9 @@ const FormDemoJsonForms = () => {
           cells={materialCells} // Use material cells for form fields
           // additionalErrors={customValidate()}
           // validationMode={"ValidateAndShow"}
-          ajv={ajv}
+          // ajv={ajv}
         />
         {/* </ThemeProvider> */}
-        {/* Use the Dropdown component and handle location changes */}
 
         <Dropdown
           schema={schema}

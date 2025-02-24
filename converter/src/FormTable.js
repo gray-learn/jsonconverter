@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const FormTable = ({ searchQuery }) => {
   const data = [
     {
-      FormTitle: "Form_Demo",
+      FormTitle: "Single_Demo",
       FormType: "Eqp",
       Owner: "Owner 1",
       Description: "Description 1",
@@ -13,23 +13,15 @@ const FormTable = ({ searchQuery }) => {
       link: "/formdemo", // Store the link here
     },
     {
-      FormTitle: "Main",
+      FormTitle: "Dynamic_Demo",
       FormType: "Lot",
       Owner: "Owner 2",
       Description: "Description 3",
       MustField: "LotId – Primary key",
       UserDefinedField: "UDATA - filter 2",
-      link: "/jsonform", // Store the link here
+      link: "/demo", // Store the link here
     },
-    {
-        FormTitle: "Drink",
-        FormType: "Drink",
-        Owner: "Owner 2",
-        Description: "Description 3",
-        MustField: "LotId – Primary key",
-        UserDefinedField: "UDATA - filter 2",
-        link: "/drink", // Store the link here
-      },
+
     // Add more data here
   ];
 

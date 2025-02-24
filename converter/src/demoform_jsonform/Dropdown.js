@@ -1,6 +1,7 @@
 // src/components/Dropdown.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
+import useCreateDropdownRule from "../utils/tools/useCreateDropdownRule";
 // Simulate fetching options for locations
 const fetchLocationOptions = async () => {
   try {
@@ -31,7 +32,6 @@ const fetchLocationOptions = async () => {
     return [];
   }
 };
-// Simulate fetching options for locations
 const fetchFoodOptions = async () => {
   try {
     const response = await new Promise((resolve, reject) => {
@@ -67,9 +67,12 @@ const Dropdown = ({
   onSendData,
   onControlData,
 }) => {
+  const { dropdownRule, createDropdownRule } = useCreateDropdownRule();
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  console.log(schema);
 
   // Part 1 Need to Existign Datasource
   useEffect(() => {
@@ -81,6 +84,12 @@ const Dropdown = ({
 
       // Get the allowed nationality options from the schema
       const allowedNationalities = schema?.properties?.nationality?.enum || [];
+
+      if (allowedNationalities.length === 0) {
+        setError("No allowed nationalities defined in schema.");
+        setLoading(false);
+        return;
+      }
 
       // Filter the location data to include only valid nationalities
       const validLocations = locationData.filter((location) =>
@@ -101,7 +110,7 @@ const Dropdown = ({
                 enum: updatedLocations, // Update nationality in schema
               },
               // Dropdown scale
-              ...createDropdown(prevSchema, 'food', updatedFoods),
+              ...createDropdown(prevSchema, "food", updatedFoods),
             },
           };
           // console.log("Updated schema:", updatedSchema);
@@ -119,32 +128,16 @@ const Dropdown = ({
   }, [schema, onSendData]);
 
   useEffect(() => {
-    // Fetch location options on mount
-    const techs = schema?.properties?.tech?.enum || [];
-    const operations = schema?.properties?.operation?.enum || [];
-    const parts = schema?.properties?.part?.enum || [];
-
+    const properties = schema?.properties || [];
     // Accessing dropDataKey's property names
     console.log(dropDataKey);
     const keyType = dropDataKey;
     switch (keyType) {
       case "tech": {
-        // return new Promise((resolve) => {
-        // const rule = createDropdownRule("5F", "part", "HIDE");
-        // console.log(rule);
-        // if (dropDataValue === "VIS") {
-        //   updateRuleSchema(schema, ["a", "b", "c"]);
-        //   onControlData("Jack");
-        // } else if (dropDataValue === "VSMC") {
-        //   updateRuleSchema(schema, ["a", "b", "c"]);
-        //   onControlData("Jack");
-        // }
-        // vis 1.2
-        //  vsmc 456
         break;
       }
       case "part": {
-        if (dropDataValue === "5F") {
+        if (dropDataValue === "5F" || dropDataValue === "4F") {
           const rule = createDropdownRule("part", "operation", "DISABLE", [
             "4F",
             "5F",
@@ -166,29 +159,12 @@ const Dropdown = ({
     // };
   }, [schema, onControlData, dropDataKey, dropDataValue]);
 
-  const createDropdownRule = (parent, child, rule, value) => {
-    // Build the JSON structure dynamically
-    const jsonStructure = {
-      type: "Control",
-      scope: `#/properties/${child}`,
-      rule: {
-        effect: rule,
-        condition: {
-          scope: `#/properties/${parent}`,
-          schema: {
-            // const: true,
-            enum: value,
-          },
-        },
-      },
-    };
-
-    // Return the JSON structure
-    return jsonStructure;
-  };
-
   // Define the createDropdown function
   function createDropdown(prevSchema, field, dropList) {
+    if (!dropList || dropList.length === 0) {
+      console.error(`Error: ${field} enum must have a non-empty array`);
+      return {};
+    }
     return {
       [field]: {
         ...prevSchema.properties[field],
@@ -213,22 +189,6 @@ const Dropdown = ({
             elements: element.elements.map((nestedElement) => {
               // TODO
               if (nestedElement.scope === key) {
-                // Update the rule condition to use dropdownData dynamically
-
-                // const nestMock = {
-                //   ...nestedElement,
-                //   rule: {
-                //     ...nestedElement.rule,
-                //     condition: {
-                //       ...nestedElement.rule.condition,
-                //       schema: {
-                //         ...nestedElement.rule.condition.schema,
-                //         // enum: dropdownData, // dynamically set the enum
-                //       },
-                //     },
-                //   },
-                // };
-
                 return rule;
               }
               return nestedElement;
@@ -238,48 +198,6 @@ const Dropdown = ({
         return element;
       }),
     };
-
-    // const updatedSchema = {
-    //   ...prevSchema,
-    //   elements: prevSchema.elements.map((element) => {
-    //     // Check if the element's scope matches the child
-    //     if (element.type === "Group" && element.elements) {
-    //       return {
-    //         ...element,
-    //         elements: element.elements.map((nestedElement) => {
-    //           // Update the enum of the specific control (child) dynamically
-    //           if (nestedElement.scope === child) {
-    //             return {
-    //               ...nestedElement,
-    //               rule: nestedElement.rule
-    //                 ? {
-    //                     ...nestedElement.rule,
-    //                     condition: {
-    //                       ...nestedElement.rule.condition,
-    //                       schema: {
-    //                         ...nestedElement.rule.condition.schema,
-    //                         enum: dropdownData, // Update the enum dynamically
-    //                       }
-    //                     }
-    //                   }
-    //                 : {
-    //                     effect: "HIDE",
-    //                     condition: {
-    //                       scope: "#/properties/tech", // You can replace this condition logic as needed
-    //                       schema: {
-    //                         enum: dropdownData,
-    //                       }
-    //                     }
-    //                   }
-    //             };
-    //           }
-    //           return nestedElement;
-    //         }),
-    //       };
-    //     }
-    //     return element;
-    //   }),
-    // };
 
     console.log("Updated schema:", updatedSchema);
     return updatedSchema; // Return updated schema
@@ -291,6 +209,14 @@ const Dropdown = ({
 
   if (error) {
     return <div>{error}</div>;
+  }
+  if (
+    schema === null ||
+    uiSchema === null ||
+    dropDataKey === null ||
+    dropDataValue === null
+  ) {
+    return <div>Error: Missing required data</div>;
   }
 
   return <></>;

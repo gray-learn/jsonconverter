@@ -71,6 +71,9 @@ const Dropdown = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  console.log(schema)
+
   // Part 1 Need to Existign Datasource
   useEffect(() => {
     // Fetch location options on mount
@@ -81,6 +84,12 @@ const Dropdown = ({
 
       // Get the allowed nationality options from the schema
       const allowedNationalities = schema?.properties?.nationality?.enum || [];
+
+      if (allowedNationalities.length === 0) {
+        setError("No allowed nationalities defined in schema.");
+        setLoading(false);
+        return;
+      }
 
       // Filter the location data to include only valid nationalities
       const validLocations = locationData.filter((location) =>
@@ -101,7 +110,7 @@ const Dropdown = ({
                 enum: updatedLocations, // Update nationality in schema
               },
               // Dropdown scale
-              ...createDropdown(prevSchema, 'food', updatedFoods),
+              ...createDropdown(prevSchema, "food", updatedFoods),
             },
           };
           // console.log("Updated schema:", updatedSchema);
@@ -189,6 +198,10 @@ const Dropdown = ({
 
   // Define the createDropdown function
   function createDropdown(prevSchema, field, dropList) {
+    if (!dropList || dropList.length === 0) {
+      console.error(`Error: ${field} enum must have a non-empty array`);
+      return {};
+    }
     return {
       [field]: {
         ...prevSchema.properties[field],
@@ -291,6 +304,14 @@ const Dropdown = ({
 
   if (error) {
     return <div>{error}</div>;
+  }
+  if (
+    schema === null ||
+    uiSchema === null ||
+    dropDataKey === null ||
+    dropDataValue === null
+  ) {
+    return <div>Error: Missing required data</div>;
   }
 
   return <></>;

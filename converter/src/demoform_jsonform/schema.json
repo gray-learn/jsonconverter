@@ -1,10 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "price": {
+        "name": {
             "type": "string",
             "maxLengthStr": 3,
-            "description": "Please enter your price"
+            "description": "Please enter your name"
         },
         "vegetarian": {
             "type": "boolean"
@@ -57,7 +57,7 @@
         "eqp_ope": {
             "type": "string",
             "description": "Please enter your eqp_ope",
-            "format": "eqp_ope_f"
+            "format": "eqp_ope"
         },
         "occupation": {
             "type": "string"
@@ -130,7 +130,7 @@
         }
     },
     "required": [
-        "price",
+        "name",
         "vegetarian",
         "birthDate",
         "personalData"
@@ -160,7 +160,7 @@
             "type": "object",
             "title": "User",
             "properties": {
-                "price": {
+                "name": {
                     "type": "string"
                 },
                 "mail": {
@@ -168,14 +168,14 @@
                 }
             },
             "required": [
-                "price",
+                "name",
                 "mail"
             ]
         }
     },
     "errorMessage": {
         "properties": {
-            "price": "price should be a string with at least 3 characters.",
+            "name": "Name should be a string with at least 3 characters.",
             "vegetarian": "Vegetarian field should be a boolean value.",
             "birthDate": "Please enter a valid birth date in the correct format.",
             "nationality": "Nationality must be one of the allowed values: US, RU, IT, CA, JP.",

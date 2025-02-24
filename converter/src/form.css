@@ -1,0 +1,121 @@
+/* Overall container */
+.App {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Button to open the dialog */
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Dialog background */
+   
+  /* Form label styling */
+  label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  /* Input fields styling */
+  input[type="text"],
+  select {
+    /* width: 70%; */
+    padding: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Option for enum values */
+  input[type="text"]:focus,
+  select:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  /* Message for dropdown or boolean field */
+  p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Buttons in the dialog */
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dialog label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .dialog input,
+  .dialog select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .dialog > div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .dialog > div button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .dialog > div button:last-child {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .dialog > div button:first-child {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .dialog > div button:hover {
+    background-color: #333;
+  }
+  
+  .dialog > div button:focus {
+    outline: none;
+  }
+  

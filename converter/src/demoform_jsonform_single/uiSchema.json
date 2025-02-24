@@ -6,7 +6,7 @@
             "elements": [
                 {
                     "type": "Control",
-                    "scope": "#/properties/price"
+                    "scope": "#/properties/name"
                 },
                 {
                     "type": "Control",
